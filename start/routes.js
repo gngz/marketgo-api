@@ -19,3 +19,21 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route
+  .post('login', 'UserController.login')
+  .middleware('guest')
+
+Route
+  .get('users/:id', 'UserController.show')
+  .middleware('auth')
+
+Route
+  .post('register', 'UserController.register')
+  .middleware('guest')
+
+Route.get('login/facebook', 'FacebookController.redirect')
+Route.get('login/google', 'GoogleController.redirect')
+
+Route.get('facebook/callback', 'FacebookController.callback')
+Route.get('google/callback', 'GoogleController.callback')
