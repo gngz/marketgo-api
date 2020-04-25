@@ -32,8 +32,8 @@ Route
   .post('register', 'UserController.register')
   .middleware('guest')
 
-Route.get('login/facebook', 'FacebookController.redirect')
-Route.get('login/google', 'GoogleController.redirect')
+Route.get('auth/facebook', 'FacebookController.redirect')
+Route.get('auth/google', 'GoogleController.redirect')
 
-Route.get('facebook/callback', 'FacebookController.callback')
-Route.get('google/callback', 'GoogleController.callback')
+Route.get('authenticated/facebook', 'FacebookController.callback')
+Route.get('authenticated/google', 'GoogleController.callback')
