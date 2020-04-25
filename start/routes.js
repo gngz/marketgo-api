@@ -36,10 +36,10 @@ Route.get('auth/google', 'GoogleController.redirect')
 
 Route.get('authenticated/facebook', 'FacebookController.callback')
 Route.get('authenticated/google', 'GoogleController.callback')
-Route.get('.well-known/acme-challenge/YuW3RjCocp4m8vaFtm34MheCCBNJx0ytctB1P0XUqBw', ({ request }) => {
+Route.get('.well-known/acme-challenge/XDweZ5FA7sO7SkFoO1dMxPBRhAZpYLxKfXp7r9vsKGA', ({ request }) => {
   /* var reader = new fs.FileReader(); 
    reader.readAsText('../config/encryption_cert', "UTF-8");
    reader.onload = (e) => { return e.target.result }
    */
-  return "YuW3RjCocp4m8vaFtm34MheCCBNJx0ytctB1P0XUqBw.BLF9bhUxwyk8sCura1Oj56UcqC61d99O-o-WeTiLU4w";
+  return "XDweZ5FA7sO7SkFoO1dMxPBRhAZpYLxKfXp7r9vsKGA.BLF9bhUxwyk8sCura1Oj56UcqC61d99O-o-WeTiLU4w"
 });
