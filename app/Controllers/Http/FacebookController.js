@@ -8,7 +8,6 @@ class FacebookController {
     async callback({ ally, auth, request }) {
         try {
             const fbUser = await ally.driver('facebook').getUser()
-            return fbUser
             // user details to be saved
             const userDetails = {
                 email: fbUser.getEmail(),
@@ -28,7 +27,7 @@ class FacebookController {
             console.log("nl", auth.login);
 
 
-            return 'Logged in'
+            return { 'Logged in': fbUser }
         } catch (error) {
             return error
             console.log(error)
