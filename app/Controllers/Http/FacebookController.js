@@ -8,14 +8,13 @@ class FacebookController {
     async callback({ ally, auth, request }) {
         try {
             const fbUser = await ally.driver('facebook').getUser()
-
+            return fbUser
             // user details to be saved
             const userDetails = {
                 email: fbUser.getEmail(),
-                token: fbUser.getAccessToken(),
                 avatar: fbUser.getAvatar(),
-                nick: fbUser.getNickname(),
-                login_source: 'facebook'
+                name: fbUser.getName(),
+                token: fbUser.getAccessToken()
             }
 
             // search for existing user
