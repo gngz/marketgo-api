@@ -25,6 +25,9 @@ class FacebookController {
 
             const user = await User.findOrCreate(whereClause, userDetails)
             await auth.login(user)
+            console.log("what is this auth:", auth);
+            console.log("nl", auth.login);
+
 
             return 'Logged in'
         } catch (error) {
