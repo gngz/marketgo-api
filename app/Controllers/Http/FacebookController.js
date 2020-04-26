@@ -30,6 +30,7 @@ class FacebookController {
 
             return 'Logged in'
         } catch (error) {
+            return error
             console.log(error)
             return 'Unable to authenticate. Try again later'
         }
