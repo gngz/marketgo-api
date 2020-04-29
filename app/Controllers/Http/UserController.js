@@ -7,7 +7,6 @@ class UserController {
     async login({ auth, request }) {
         const { email, password } = request.all()
         const token = await auth.attempt(email, password)
-        console.log(token)
         return { token }
 
     }
@@ -24,7 +23,8 @@ class UserController {
             return validation.messages()
         }
         const user = await User.create(data)
-        return { "message": "registration successful" }
+        const token = await auth.generate(user)
+        return { "message": "registration successful", "token": token.token }
     }
 
     show({ auth, params }) {
