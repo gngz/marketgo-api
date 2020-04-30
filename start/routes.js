@@ -31,8 +31,19 @@ Route
   .post('register', 'UserController.register')
   .middleware('guest')
 
-Route.get('auth/facebook', 'FacebookController.redirect')
-Route.get('auth/google', 'GoogleController.redirect')
 
-Route.get('authenticated/facebook', 'FacebookController.callback')
-Route.get('authenticated/google', 'GoogleController.callback')
+Route.group(() => {
+
+}).prefix('list')
+
+Route.group(() => {
+  Route.get('facebook', 'FacebookController.redirect')
+  Route.get('google', 'GoogleController.redirect')
+
+}).prefix('auth')
+
+
+Route.group(() => {
+  Route.get('facebook', 'FacebookController.callback')
+  Route.get('google', 'GoogleController.callback')
+}).prefix('authenticated')
