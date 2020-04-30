@@ -33,8 +33,12 @@ Route
 
 
 Route.group(() => {
+  Route.get('/', 'ListController.index')
+  Route.post('/', 'ListController.create')
 
-}).prefix('list')
+})
+  .prefix('list')
+  .middleware('auth')
 
 Route.group(() => {
   Route.get('facebook', 'FacebookController.redirect')
