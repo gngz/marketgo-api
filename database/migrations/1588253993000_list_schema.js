@@ -9,6 +9,7 @@ class ListSchema extends Schema {
       table.increments()
       table.timestamps()
       table.string("name")
+      table.integer('user_id').unsigned().references('id').inTable('users');
     })
   }
 
