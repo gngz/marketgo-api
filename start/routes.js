@@ -35,7 +35,8 @@ Route
 Route.group(() => {
   Route.get('/', 'ListController.index')
   Route.post('/', 'ListController.create')
-
+  Route.delete('/:id', 'ListController.remove')
+  Route.patch('/:id', 'ListController.update')
 })
   .prefix('list')
   .middleware('auth')
