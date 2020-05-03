@@ -7,7 +7,7 @@ class UserController {
     async login({ auth, request }) {
         const { email, password } = request.all()
         const token = await auth.attempt(email, password)
-        return { token }
+        return { token: token.token }
 
     }
 
@@ -88,6 +88,18 @@ class UserController {
             return "You cannot see someone else's profile"
         }
         return auth.user
+    }
+
+    async verify({ auth, request, response }) {
+        try {
+            await auth.check()
+            return response.send({ message: "valid" })
+        } catch (error) {
+            const authorization = request.header('Authorization')
+            if (authorization == null) return response.status(400).send({ message: "No Token" })
+
+            return response.send({ message: "Invalid Token" })
+        }
     }
 }
 
