@@ -34,7 +34,6 @@ Route.group(() => {
   Route.post('google', 'UserController.googleLogin')
   Route.post('/', 'UserController.login')
   Route.post('register', 'UserController.register')
-
+  Route.post('verify', 'UserController.verify')
 })
   .prefix('auth')
-  .middleware('guest')
