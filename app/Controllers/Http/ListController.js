@@ -10,7 +10,30 @@ class ListController {
 
     }
 
-    async create({ auth, request }) {
+    async read({ auth, params, response }) {
+        const user = auth.user;
+        if (params.id) {
+            const user = auth.user;
+            const list = await List.find(params.id);
+
+            if (list) {
+
+                if (list.user_id == user.id)
+                    return response.send(list);
+
+                return response
+                    .status(403)
+                    .send({ message: "Forbideen" })
+            }
+        }
+
+        return response
+            .status(400)
+            .send({ message: "bad request" })
+
+    }
+
+    async create({ auth, request, response }) {
         const rules = {
             name: 'required'
         }
@@ -19,15 +42,23 @@ class ListController {
         const validation = await validate(data, rules)
 
         if (validation.fails()) {
-            return validation.messages()
+            return response
+                .status(400)
+                .send(validation.messages())
         }
+
         const user = auth.user;
         const list = new List();
 
 
         list.name = data.name;
 
-        return await user.lists().save(list);
+        const newList = await user.lists().save(list)
+
+        if (newList) {
+            return response.status(201).send(newList);
+        }
+
 
 
     }

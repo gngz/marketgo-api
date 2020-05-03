@@ -6,8 +6,9 @@ const Schema = use('Schema')
 class ProductSchema extends Schema {
   up() {
     this.create('products', (table) => {
-      table.increments() // Talvez o index não deva ser um auto increments mas sim o codigo do produto
+      //table.increments() // Talvez o index não deva ser um auto increments mas sim o codigo do produto
       table.timestamps()
+      table.string("ean").primary();
       table.string("name").notNullable();
       table.text("description").notNullable();
       table.decimal("price", 15, 2).notNullable();

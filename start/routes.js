@@ -34,6 +34,7 @@ Route
 
 Route.group(() => {
   Route.get('/', 'ListController.index')
+  Route.get('/:id', 'ListController.read')
   Route.post('/', 'ListController.create')
   Route.delete('/:id', 'ListController.remove')
   Route.patch('/:id', 'ListController.update')
