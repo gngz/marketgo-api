@@ -16,8 +16,8 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-}).middleware('auth')
+  return "MarketGO API"
+})
 
 Route.group(() => {
   Route.get('/', 'ListController.index')
