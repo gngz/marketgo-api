@@ -17,20 +17,7 @@
 const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
-})
-
-Route
-  .post('login', 'UserController.login')
-  .middleware('guest')
-
-Route
-  .get('users/:id', 'UserController.show')
-  .middleware('auth')
-
-Route
-  .post('register', 'UserController.register')
-  .middleware('guest')
-
+}).middleware('auth')
 
 Route.group(() => {
   Route.get('/', 'ListController.index')
@@ -43,13 +30,11 @@ Route.group(() => {
   .middleware('auth')
 
 Route.group(() => {
-  Route.get('facebook', 'FacebookController.redirect')
-  Route.get('google', 'GoogleController.redirect')
+  Route.post('facebook', 'UserController.facebookLogin')
+  Route.post('google', 'UserController.googleLogin')
+  Route.post('/', 'UserController.login')
+  Route.post('register', 'UserController.register')
 
-}).prefix('auth')
-
-
-Route.group(() => {
-  Route.get('facebook', 'FacebookController.callback')
-  Route.get('google', 'GoogleController.callback')
-}).prefix('authenticated')
+})
+  .prefix('auth')
+  .middleware('guest')
