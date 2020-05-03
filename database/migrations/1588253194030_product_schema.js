@@ -8,10 +8,11 @@ class ProductSchema extends Schema {
     this.create('products', (table) => {
       //table.increments() // Talvez o index não deva ser um auto increments mas sim o codigo do produto
       table.timestamps()
-      table.string("ean").primary();
+      table.string("ean", 13).primary().unique();
       table.string("name").notNullable();
       table.text("description").notNullable();
       table.decimal("price", 15, 2).notNullable();
+      table.string("image", 255);
       // Photo URL or  ID of uploads table
 
     })
