@@ -27,9 +27,16 @@ class UserController {
         return { "message": "registration successful", "token": token.token }
     }
 
-    async googleLogin({ ally, auth, request }) {
-        if (request.input('token') == null) return;
-        var googleUser = await ally.driver('google').getUserByToken(request.input('token'))
+    async googleLogin({ ally, auth, request, response }) {
+        if (request.input('token') == null) return response.status(400).send({ message: "Bad Request - Token Needed" });
+
+        try {
+            var googleUser = await ally.driver('google').getUserByToken(request.input('token'))
+        } catch (error) {
+            console.log(error);
+            return response.status(400).send({ message: "Bad Request - Invalid Token" });
+        }
+
 
         const userDetails = {
             email: googleUser.getEmail(),
@@ -44,12 +51,20 @@ class UserController {
 
         const user = await User.findOrCreate(whereClause, userDetails)
         const token = await auth.generate(user)
-        return { ok: "yes" }
+        return { "token": token.token }
     }
 
-    async facebookLogin({ ally, auth, request }) {
-        if (request.input('token') == null) return;
-        var facebookUser = await ally.driver('facebook').getUserByToken(request.input('token'))
+    async facebookLogin({ ally, auth, request, response }) {
+
+        if (request.input('token') == null) return response.status(400).send({ message: "Bad Request - Token Needed" });
+
+        try {
+            var facebookUser = await ally.driver('facebook').getUserByToken(request.input('token'))
+        } catch (error) {
+            console.log(error);
+            return response.status(400).send({ message: "Bad Request - Invalid Token" });
+        }
+
 
         const userDetails = {
             email: facebookUser.getEmail(),
@@ -64,7 +79,7 @@ class UserController {
 
         const user = await User.findOrCreate(whereClause, userDetails)
         const token = await auth.generate(user)
-        return { ok: "yes" }
+        return { "token": token.token }
 
     }
 
