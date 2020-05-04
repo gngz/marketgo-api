@@ -7,7 +7,8 @@ class UserController {
     async login({ auth, request }) {
         const { email, password } = request.all()
         const token = await auth.attempt(email, password)
-        return { token: token.token }
+        const user = await User.findBy('email', email);
+        return { user, token: token.token }
 
     }
 
@@ -24,7 +25,7 @@ class UserController {
         }
         const user = await User.create(data)
         const token = await auth.generate(user)
-        return { "message": "registration successful", "token": token.token }
+        return { "message": "registration successful", user, "token": token.token }
     }
 
     async googleLogin({ ally, auth, request, response }) {
@@ -51,7 +52,7 @@ class UserController {
 
         const user = await User.findOrCreate(whereClause, userDetails)
         const token = await auth.generate(user)
-        return { "token": token.token }
+        return { user, "token": token.token }
     }
 
     async facebookLogin({ ally, auth, request, response }) {
@@ -79,7 +80,7 @@ class UserController {
 
         const user = await User.findOrCreate(whereClause, userDetails)
         const token = await auth.generate(user)
-        return { "token": token.token }
+        return { user, "token": token.token }
 
     }
 
