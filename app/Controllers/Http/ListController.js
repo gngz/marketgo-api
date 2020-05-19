@@ -12,7 +12,7 @@ class ListController {
 
     async read({ auth, params, response }) {
         const user = auth.user;
-        if (params.id) {
+        if (params.id) { //USERID 
             const user = auth.user;
             const list = await List.find(params.id);
 
@@ -56,7 +56,7 @@ class ListController {
         const newList = await user.lists().save(list)
 
         if (newList) {
-            return response.status(201).send(newList);
+            return response.status(201).send(list);
         }
 
 
