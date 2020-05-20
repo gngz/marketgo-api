@@ -64,20 +64,19 @@ class ListController {
     }
 
     // TODO better validation
-    async remove({ params, auth, request }) {
+    async remove({ params, auth, request, response }) {
         if (params.id) {
             const user = auth.user;
 
             const list = await List.find(params.id);
+            if (list && list.user_id == user.id) return response.status(200).send({ message: list.delete() });
+            if (list == null) return response.status(404).send({ message: "List does not exist" });
+            return response.status(403).send({ message: "List does not belong to this user" });
 
-            if (list && list.user_id == user.id) {
-                return list.delete();
-            }
 
 
         }
-
-        return false;
+        return response.status(400).send({ message: "no id supplied" });
     }
 
     // TODO better validation
