@@ -113,6 +113,7 @@ class ListController {
         console.log("ola");
         const data = request.only(['id', 'ean', 'quantity'])
         const quantity = data.quantity || 0;
+
         if (data.id && data.ean && data.quantity) {
             const user = auth.user;
             const list = await List.find(data.id);
@@ -122,6 +123,26 @@ class ListController {
 
         }
         return response.status(400).send({ messsage: "bad request" });
+    }
+
+    // TODO to test
+    async removeProduct({ auth, request, response }) {
+        const data = request.only(['id', 'ean'])
+
+        if (data.id && data.ean) {
+            const user = auth.user;
+            const list = await List.find(data.id);
+            if (list && list.user_id == user.id) {
+                return await list.products().detach([data.ean]);
+
+            }
+        }
+
+        return response.status(400).send({ messsage: "bad request" });
+
+
+
+
     }
 }
 
