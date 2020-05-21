@@ -139,11 +139,32 @@ class ListController {
         }
 
         return response.status(400).send({ messsage: "bad request" });
+    }
+
+    // TODO to test
+    async updateProduct({ auth, request, response }) {
+        const data = request.only(['id', 'ean', 'quantity'])
+
+        if (data.id && data.ean && data.quantity) {
+            const user = auth.user;
+            const list = await List.find(data.id);
 
 
+            if (list && list.user_id == user.id) {
+                return await list
+                    .products()
+                    .pivotQuery()
+                    .where('ean', ean)
+                    .update({ quantity: data.quantity });
+
+            }
+        }
+
+        return response.status(400).send({ messsage: "bad request" });
 
 
     }
+
 }
 
 module.exports = ListController
