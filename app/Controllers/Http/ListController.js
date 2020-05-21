@@ -108,14 +108,16 @@ class ListController {
         return response.status(400).send({ messsage: "bad request" });
     }
 
+    // TODO test this code
     async addProducts({ params, auth, request, response }) {
         console.log("ola");
         const data = request.only(['id', 'ean', 'quantity'])
+        const quantity = data.quantity || 0;
         if (data.id && data.ean && data.quantity) {
             const user = auth.user;
             const list = await List.find(data.id);
             if (list && list.user_id == user.id) {
-                return await list.products().attach([data.ean]);
+                return await list.products().attach([data.ean], (row) => row.quantity = quantity);
             }
 
         }
