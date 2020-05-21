@@ -110,7 +110,6 @@ class ListController {
 
     // TODO test this code
     async addProducts({ params, auth, request, response }) {
-        console.log("ola");
         const data = request.only(['id', 'ean', 'quantity'])
         const quantity = data.quantity || 0;
 
@@ -118,7 +117,7 @@ class ListController {
             const user = auth.user;
             const list = await List.find(data.id);
             if (list && list.user_id == user.id) {
-                return await list.products().attach([data.ean], (row) => row.quantity = quantity);
+                return response.status(201).send(await list.products().attach([data.ean], (row) => row.quantity = quantity));
             }
 
         }
@@ -133,7 +132,9 @@ class ListController {
             const user = auth.user;
             const list = await List.find(data.id);
             if (list && list.user_id == user.id) {
-                return await list.products().detach([data.ean]);
+                var num_rows = await list.products().detach([data.ean]);
+                if (num_rows > 0) return response.status(201).send({ message: true })
+                return response.status(404).send({ message: "product not found" })
 
             }
         }
@@ -149,13 +150,14 @@ class ListController {
             const user = auth.user;
             const list = await List.find(data.id);
 
-
             if (list && list.user_id == user.id) {
-                return await list
+                var num_rows = await list
                     .products()
                     .pivotQuery()
-                    .where('ean', ean)
+                    .where('product_ean', data.ean)
                     .update({ quantity: data.quantity });
+                if (num_rows > 0) return response.status(200).send({ message: true })
+                return response.status(404).send({ message: "product not found" })
 
             }
         }

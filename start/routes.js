@@ -22,14 +22,28 @@ Route.get('/', () => {
 Route.group(() => {
   Route.get('/', 'ListController.index')
   Route.get('/:id', 'ListController.read')
-  Route.get('/:id/products/', 'ListController.getProducts')
   Route.post('/', 'ListController.create')
-  Route.post('/addProduct', 'ListController.addProducts')
   Route.delete('/:id', 'ListController.remove')
   Route.patch('/:id', 'ListController.update')
-
+  Route.get('/:id/products/', 'ListController.getProducts')
 })
   .prefix('list')
+  .middleware('auth')
+
+Route.group(() => {
+  Route.get('/all', 'ProductController.getAll')
+  Route.get('/:ean', 'ProductController.getProduct')
+
+})
+  .prefix('product')
+  .middleware('auth')
+
+Route.group(() => {
+  Route.post('/product', 'ListController.addProducts')
+  Route.delete('/product', 'ListController.removeProduct')
+  Route.patch('/product', 'ListController.updateProduct')
+})
+  .prefix('cart')
   .middleware('auth')
 
 Route.group(() => {
