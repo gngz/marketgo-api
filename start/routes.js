@@ -22,9 +22,12 @@ Route.get('/', () => {
 Route.group(() => {
   Route.get('/', 'ListController.index')
   Route.get('/:id', 'ListController.read')
+  Route.get('/:id/products/', 'ListController.getProducts')
   Route.post('/', 'ListController.create')
+  Route.post('/addProduct', 'ListController.addProducts')
   Route.delete('/:id', 'ListController.remove')
   Route.patch('/:id', 'ListController.update')
+
 })
   .prefix('list')
   .middleware('auth')

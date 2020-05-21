@@ -15,7 +15,6 @@ class ListController {
         if (params.id) { //USERID 
             const user = auth.user;
             const list = await List.find(params.id);
-
             if (list) {
 
                 if (list.user_id == user.id)
@@ -94,6 +93,33 @@ class ListController {
 
             }
         }
+    }
+
+    /**Li */
+    async getProducts({ params, auth, request, response }) {
+        if (params.id) {
+            const user = auth.user;
+            const list = await List.find(params.id);
+            if (list && list.user_id == user.id) {
+                return list.products().fetch();
+            }
+
+        }
+        return response.status(400).send({ messsage: "bad request" });
+    }
+
+    async addProducts({ params, auth, request, response }) {
+        console.log("ola");
+        const data = request.only(['id', 'ean', 'quantity'])
+        if (data.id && data.ean && data.quantity) {
+            const user = auth.user;
+            const list = await List.find(data.id);
+            if (list && list.user_id == user.id) {
+                return await list.products().attach([data.ean]);
+            }
+
+        }
+        return response.status(400).send({ messsage: "bad request" });
     }
 }
 
