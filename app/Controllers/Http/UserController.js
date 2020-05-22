@@ -1,6 +1,7 @@
 'use strict'
 const User = use('App/Models/User')
 const { validate } = use('Validator')
+const Stripe = use('Stripe');
 
 class UserController {
 
@@ -23,7 +24,16 @@ class UserController {
         if (validation.fails()) {
             return validation.messages()
         }
+
+        var customer = await Stripe.customers.create({
+            name: data.name,
+            email: data.email,
+        })
+
+
+        data.stripe_id = customer.id;
         const user = await User.create(data)
+
         const token = await auth.generate(user)
         return { "message": "registration successful", user, "token": token.token }
     }
