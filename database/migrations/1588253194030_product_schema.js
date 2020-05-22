@@ -10,9 +10,9 @@ class ProductSchema extends Schema {
       table.timestamps()
       table.string("ean", 13).primary().unique();
       table.string("name").notNullable();
-      table.text("description").notNullable();
+      table.text("description")
       table.decimal("price", 15, 2).notNullable();
-      table.string("image", 255);
+      table.text("image");
       // Photo URL or  ID of uploads table
 
     })
