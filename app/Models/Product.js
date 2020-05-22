@@ -4,6 +4,10 @@
 const Model = use('Model')
 
 class Product extends Model {
+
+    category() {
+        return this.hasOne('App/Models/Category');
+    }
 }
 
 module.exports = Product
