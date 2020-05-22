@@ -19,7 +19,7 @@ class CategorySeeder {
 
     const Mercearia = await Category.create({ name: "Mercearia" });
     (await Category.create({ name: "Arroz, Massa e Farinha" })).father().associate(Mercearia);
-    (await Category.create({ name: "Azeite, Ókeo e Vinagre" })).father().associate(Mercearia);
+    (await Category.create({ name: "Azeite, Óleo e Vinagre" })).father().associate(Mercearia);
     (await Category.create({ name: "Molhos, Temperos e Sal" })).father().associate(Mercearia);
     (await Category.create({ name: "Conservas, Salsichas e Legumes" })).father().associate(Mercearia);
     (await Category.create({ name: "Açúcar, Mel e Doces" })).father().associate(Mercearia);
