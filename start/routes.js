@@ -32,11 +32,12 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/all', 'ProductController.getAll')
+  Route.get('/category/:id', 'ProductController.getProductsByCategory')
   Route.get('/:ean', 'ProductController.getProduct')
 
 })
   .prefix('product')
-  .middleware('auth')
+
 
 Route.group(() => {
   Route.post('/product', 'ListController.addProducts')
@@ -54,3 +55,17 @@ Route.group(() => {
   Route.post('verify', 'UserController.verify')
 })
   .prefix('auth')
+
+Route.group(() => {
+  Route.get('/', 'CardController.index')
+  Route.post('/', 'CardController.create')
+})
+  .prefix('cards')
+  .middleware('auth')
+
+
+Route.group(() => {
+  Route.post('/', 'CardController.payment')
+})
+  .prefix('pay')
+  .middleware('auth')
