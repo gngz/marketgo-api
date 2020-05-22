@@ -13,6 +13,7 @@ class ProductSchema extends Schema {
       table.text("description")
       table.decimal("price", 15, 2).notNullable();
       table.text("image");
+      table.integer('category_id').unsigned().references('id').inTable('categories');
       // Photo URL or  ID of uploads table
 
     })
