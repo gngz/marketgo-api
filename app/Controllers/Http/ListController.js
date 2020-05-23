@@ -138,7 +138,7 @@ class ListController {
             const list = await List.find(data.id);
             if (list && list.user_id == user.id) {
                 var num_rows = await list.products().detach([data.ean]);
-                if (num_rows > 0) return response.status(201).send({ message: true })
+                if (num_rows > 0) return response.status(200).send({ message: true })
                 return response.status(404).send({ message: "product not found" })
 
             }
