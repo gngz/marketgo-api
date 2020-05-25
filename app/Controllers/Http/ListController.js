@@ -1,5 +1,6 @@
 'use strict'
 const User = use('App/Models/User')
+const Product = use('App/Models/Product')
 const List = use('App/Models/List')
 const { validate } = use('Validator')
 
@@ -116,13 +117,25 @@ class ListController {
     // TODO test this code
     async addProducts({ params, auth, request, response }) {
         const data = request.only(['id', 'ean', 'quantity'])
-        const quantity = data.quantity || 0;
+        const quantity = data.quantity || 1;
 
-        if (data.id && data.ean && data.quantity) {
+        if (data.id && data.ean) {
             const user = auth.user;
             const list = await List.find(data.id);
+            var product = (await Product.findBy('ean', data.ean))
+            if (product == null) return response.status(404).send({ message: "Product not found" });
+            product = product.toJSON();
+            product.price = parseFloat(product.price);
             if (list && list.user_id == user.id) {
-                return response.status(201).send(await list.products().attach([data.ean], (row) => row.quantity = quantity));
+                var hasPivot = await list.products().wherePivot('product_ean', product.ean).fetch();
+                if (hasPivot.rows.length > 0) {
+                    return response.status(409).send({ message: "Already added this product" });
+                }
+                var pivot = await list.products().attach([data.ean], (row) => row.quantity = quantity)
+                //pivot.quantity = parseInt(pivot.quantity);
+                return response.status(201).send({ ...product, "pivot": pivot[0] });
+
+                //return response.status(500).send({ message: "Something unexpected went wrong! Culpa do manel" });
             }
 
         }
