@@ -9,7 +9,7 @@ class ShoppingCartSchema extends Schema {
       table.increments()
       table.timestamps()
       table.integer('quantity').unsigned()
-      table.integer('list_id').unsigned().references('id').inTable('lists')
+      table.integer('list_id').unsigned().references('id').inTable('lists').onDelete('cascade');
       table.string('product_ean', 13).references('ean').inTable('products')
 
     })
