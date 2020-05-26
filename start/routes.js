@@ -31,6 +31,12 @@ Route.group(() => {
   .middleware('auth')
 
 Route.group(() => {
+  Route.get('/', 'CategoryController.getCategories')
+})
+  .prefix('category')
+  .middleware('auth')
+
+Route.group(() => {
   Route.get('/all', 'ProductController.getAll')
   Route.get('/category/:id', 'ProductController.getProductsByCategory')
   Route.get('/:ean', 'ProductController.getProduct')

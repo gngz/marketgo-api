@@ -8,6 +8,7 @@ class CategorySchema extends Schema {
     this.create('categories', (table) => {
       table.increments()
       table.text('name')
+      table.text('image')
       table.integer('category_id').unsigned().references('id').inTable('categories');
 
     })
