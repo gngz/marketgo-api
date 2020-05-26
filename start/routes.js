@@ -72,7 +72,8 @@ Route.group(() => {
 
 
 Route.group(() => {
-  Route.post('/', 'CardController.payment')
+  Route.post('/', 'PaymentController.payment')
+  Route.get('/', 'PaymentController.index')
 })
-  .prefix('pay')
+  .prefix('payments')
   .middleware('auth')
