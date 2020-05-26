@@ -5,7 +5,14 @@ const Category = use('App/Models/Category')
 class ProductController {
     async getAll({ auth, request, response }) {
 
-        return await Product.all();
+        var products = await Product.all();
+        var products = products.toJSON();
+        products = products.map(element => {
+            element.price = parseFloat(element.price)
+            return element
+        });
+
+        return response.status(200).send(products);
 
     }
 
@@ -22,7 +29,11 @@ class ProductController {
 
         var category = await Category.find(params.id);
         var products = await category.products().setHidden(['category_id']).fetch();
-
+        products = products.toJSON();
+        products = products.map(element => {
+            element.price = parseFloat(element.price)
+            return element
+        })
         if (products) {
             return response.status(200).send(products);
         }
