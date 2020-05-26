@@ -59,6 +59,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/', 'CardController.index')
   Route.post('/', 'CardController.create')
+  Route.delete('/', 'CardController.delete')
 })
   .prefix('cards')
   .middleware('auth')

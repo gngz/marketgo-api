@@ -49,6 +49,28 @@ class CardController {
 
     }
 
+    async delete({ auth, request, response }) {
+
+        const data = request.only(['id'])
+        const user = auth.user;
+        const customer_id = user.stripe_id;
+
+        try {
+            var result = await Stripe.customers.deleteSource(customer_id, data.id);
+
+            if (result) {
+                return response.status(200).send(result)
+            }
+        }
+        catch (err) {
+
+
+            return response.status(500).send({ message: "Error ocurred" })
+        }
+
+
+    }
+
     async payment({ auth, request, response }) {
         const data = request.only(['list_id', 'card_id']);
         const user = auth.user;
