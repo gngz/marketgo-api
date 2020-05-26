@@ -49,10 +49,18 @@ class UserController {
         }
 
 
+        var customer = await Stripe.customers.create({
+            name: googleUser.getName(),
+            email: googleUser.getEmail(),
+        })
+
+
+
         const userDetails = {
             email: googleUser.getEmail(),
             avatar: googleUser.getAvatar(),
             name: googleUser.getName(),
+            "stripe_id": customer.id,
         }
 
         // search for existing user
@@ -61,6 +69,7 @@ class UserController {
         }
 
         const user = await User.findOrCreate(whereClause, userDetails)
+
         const token = await auth.generate(user)
         return { user, "token": token.token }
     }
@@ -77,10 +86,16 @@ class UserController {
         }
 
 
+        var customer = await Stripe.customers.create({
+            name: facebookUser.name,
+            email: facebookUser.email,
+        })
+
         const userDetails = {
             email: facebookUser.getEmail(),
             avatar: facebookUser.getAvatar(),
             name: facebookUser.getName(),
+            "stripe_id": customer.id,
         }
 
         // search for existing user
