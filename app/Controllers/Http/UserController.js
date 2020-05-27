@@ -22,7 +22,7 @@ class UserController {
         const validation = await validate(data, rules)
 
         if (validation.fails()) {
-            return validation.messages()
+            return validation.messages()[0]
         }
 
         var customer = await Stripe.customers.create({
