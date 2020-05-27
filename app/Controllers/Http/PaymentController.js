@@ -8,9 +8,9 @@ class PaymentController {
 
     async index({ auth, request, response }) {
         const user = auth.user;
+        const { page } = request.all();
 
-
-        return await user.payments().fetch();
+        return await user.payments().paginate(page || 1, 10)
     }
 
     async payment({ auth, request, response }) {
@@ -49,10 +49,12 @@ class PaymentController {
 
             if (paymentIntent.status == "succeeded") {
 
-                user.payments().create({
-                    list: list.name,
+                var result = await user.payments().create({
+                    list_name: list.name,
                     total
                 })
+
+                console.log("DEBUG", result);
 
                 return response.status(200).send({
                     allowedList,
