@@ -9,6 +9,8 @@ class PaymentSchema extends Schema {
       table.increments()
       table.timestamps()
       table.string("list_name")
+      table.string("card_brand");
+      table.string("card_last4");
       table.decimal("total", 15, 2).notNullable()
       table.integer('user_id').unsigned().references('id').inTable('users');
     })

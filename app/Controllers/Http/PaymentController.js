@@ -10,7 +10,11 @@ class PaymentController {
         const user = auth.user;
         const { page } = request.all();
 
-        return await user.payments().paginate(page || 1, 10)
+        return await user.payments().paginate(page || 1, 15)
+    }
+
+    async getCard(customerId, cardId) {
+        return await Stripe.customers.retrieveSource(customerId, cardId);
     }
 
     async payment({ auth, request, response }) {
@@ -36,6 +40,8 @@ class PaymentController {
         let total = allowedList.reduce((total, product) => total + (product.pivot.quantity * Number(product.price)), 0)
 
         try {
+
+
             const paymentIntent = await Stripe.paymentIntents.create({
                 currency: "eur",
                 customer: user.stripe_id,
@@ -46,15 +52,20 @@ class PaymentController {
             })
 
 
+            var card = await this.getCard(user.stripe_id, data.card_id);
 
             if (paymentIntent.status == "succeeded") {
 
                 var result = await user.payments().create({
                     list_name: list.name,
-                    total
+                    total,
+                    "card_last4": card.last4,
+                    "card_brand": card.brand,
                 })
 
-                console.log("DEBUG", result);
+
+
+                console.log("DEBUG", paymentIntent);
 
                 return response.status(200).send({
                     allowedList,
