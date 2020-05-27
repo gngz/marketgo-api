@@ -14,12 +14,12 @@ class PaymentController {
     }
 
     async payment({ auth, request, response }) {
-        const data = request.only(['list_id', 'card_id']);
+        const data = request.only(['products', 'card_id', 'list_id']);
         const user = auth.user;
-
         const rules = {
-            list_id: "required",
-            card_id: "required"
+            products: "required",
+            card_id: "required",
+            list_id: "required"
         }
 
         const validation = await validate(data, rules)
@@ -28,17 +28,12 @@ class PaymentController {
 
         const list = await List.find(data.list_id)
         const products = (await list.products().fetch()).toJSON()
+        var allowedList = [];
+        products.forEach(product => {
+            if (data.products.includes(product.ean)) allowedList.push(product);
 
-        var product_list = products.map((product) => {
-            return {
-                name: product.name,
-                description: product.description,
-                quantity: product.pivot.quantity,
-                price: Number(product.price),
-            }
-        })
-
-        let total = product_list.reduce((total, product) => total + (product.quantity * product.price), 0)
+        });
+        let total = allowedList.reduce((total, product) => total + (product.pivot.quantity * Number(product.price)), 0)
 
         try {
             const paymentIntent = await Stripe.paymentIntents.create({
@@ -60,7 +55,7 @@ class PaymentController {
                 })
 
                 return response.status(200).send({
-                    product_list,
+                    allowedList,
                     total,
                     status: paymentIntent.status,
                 });
