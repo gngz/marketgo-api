@@ -4,7 +4,9 @@
 const Model = use('Model')
 
 class Product extends Model {
-
+    static get primaryKey() {
+        return 'ean'
+    }
     category() {
         return this.hasMany('App/Models/Category');
     }
