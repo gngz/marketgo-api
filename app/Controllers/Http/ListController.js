@@ -102,7 +102,7 @@ class ListController {
             const user = auth.user;
             const list = await List.find(params.id);
             if (list && list.user_id == user.id) {
-                var products = (await list.products().fetch()).toJSON();
+                var products = (await list.products().orderBy('location', 'asc').fetch()).toJSON();
 
                 return products.map(element => {
                     element.price = parseFloat(element.price)
